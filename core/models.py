@@ -212,3 +212,36 @@ def userprofile_receiver(sender, instance, created, *args, **kwargs):
 
 
 post_save.connect(userprofile_receiver, sender=settings.AUTH_USER_MODEL)
+
+CATEGORY_CARS = (
+    ('S', 'Sedan'),
+    ('H', 'Hatchback'),
+    ('J', 'Jeep')
+)
+
+
+class Car(models.Model):
+    title = models.CharField(max_length=100)
+    price = models.FloatField()
+    category = models.CharField(choices=CATEGORY_CARS, max_length=2)
+    slug = models.SlugField()
+    description = models.TextField()
+    image = models.ImageField()
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse("core:car", kwargs={
+            'slug': self.slug
+        })
+
+    def get_add_to_cart_url(self):
+        return reverse("core:detailpage", kwargs={
+            'slug': self.slug
+        })
+
+    # def get_remove_from_cart_url(self):
+    #     return reverse("core:remove-from-cart", kwargs={
+    #         'slug': self.slug
+    #     })

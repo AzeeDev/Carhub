@@ -8,7 +8,7 @@ from django.views.generic import ListView, DetailView, View
 from django.shortcuts import redirect
 from django.utils import timezone
 from .forms import CheckoutForm, CouponForm, RefundForm, PaymentForm
-from .models import Item, OrderItem, Order, Address, Payment, Coupon, Refund, UserProfile
+from .models import Item, OrderItem, Order, Address, Payment, Car Coupon, Refund, UserProfile
 
 import random
 import string
@@ -23,6 +23,13 @@ def create_ref_code():
 def products(request):
     context = {
         'items': Item.objects.all()
+    }
+    return render(request, "products.html", context)
+
+
+def cars(request):
+    context = {
+        'Cars': Car.objects.all()
     }
     return render(request, "products.html", context)
 
@@ -513,3 +520,8 @@ class RequestRefundView(View):
             except ObjectDoesNotExist:
                 messages.info(self.request, "This order does not exist.")
                 return redirect("core:request-refund")
+
+
+class CarDetailView(DetailView):
+    model = model
+    template_name = "cardetail.html"

@@ -10,6 +10,9 @@ import ProductDetail from "./containers/ProductDetail";
 import OrderSummary from "./containers/OrderSummary";
 import Checkout from "./containers/Checkout";
 import Profile from "./containers/Profile";
+import Car from "./containers/CarList";
+import CarList from "./containers/CarList";
+import CarDetail from "./containers/CarDetail";
 
 const BaseRouter = () => (
   <Hoc>
@@ -21,6 +24,8 @@ const BaseRouter = () => (
     <Route path="/checkout" component={Checkout} />
     <Route path="/profile" component={Profile} />
     <Route exact path="/" component={HomepageLayout} />
+    <Route exact path="/car" component={CarList} />
+    <Route path="/cardetail/:productID" component={CarDetail} />
   </Hoc>
 );
 

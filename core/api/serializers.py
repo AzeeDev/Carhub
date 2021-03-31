@@ -2,7 +2,8 @@ from django_countries.serializer_fields import CountryField
 from rest_framework import serializers
 from core.models import (
     Address, Item, Order, OrderItem, Coupon, Variation, ItemVariation,
-    Payment
+    Payment,
+    Car
 )
 
 
@@ -44,6 +45,24 @@ class ItemSerializer(serializers.ModelSerializer):
 
     def get_label(self, obj):
         return obj.get_label_display()
+
+
+class CarSerializer(serializers.ModelSerializer):
+    category = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Car
+        fields = (
+            'id',
+            'title',
+            'category',
+            'slug',
+            'description',
+            'image'
+        )
+
+    def get_category(self, obj):
+        return obj.get_category_display()
 
 
 class VariationDetailSerializer(serializers.ModelSerializer):
@@ -181,6 +200,24 @@ class ItemDetailSerializer(serializers.ModelSerializer):
 
     def get_variations(self, obj):
         return VariationSerializer(obj.variation_set.all(), many=True).data
+
+
+class CarDetailSerializer(serializers.ModelSerializer):
+    category = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Car
+        fields = (
+            'id',
+            'title',
+            'category',
+            'slug',
+            'description',
+            'image',
+        )
+
+    def get_category(self, obj):
+        return obj.get_category_display()
 
 
 class AddressSerializer(serializers.ModelSerializer):

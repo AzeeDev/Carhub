@@ -9,7 +9,9 @@ from .views import (
     remove_single_item_from_cart,
     PaymentView,
     AddCouponView,
-    RequestRefundView
+    RequestRefundView,
+    Car,
+    CarDetailView
 )
 
 app_name = 'core'
@@ -26,4 +28,6 @@ urlpatterns = [
          name='remove-single-item-from-cart'),
     path('payment/<payment_option>/', PaymentView.as_view(), name='payment'),
     path('request-refund/', RequestRefundView.as_view(), name='request-refund')
+    path('car/', Car.as_view(), name='fetch-cars'),
+    path('cardetail/', CarDetailView.as_view(), name='fetch-cars'),
 ]

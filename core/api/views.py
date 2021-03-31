@@ -16,9 +16,11 @@ from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 from core.models import Item, OrderItem, Order
 from .serializers import (
     ItemSerializer, OrderSerializer, ItemDetailSerializer, AddressSerializer,
-    PaymentSerializer
+    PaymentSerializer,
+    CarSerializer,
+    CarDetailSerializer
 )
-from core.models import Item, OrderItem, Order, Address, Payment, Coupon, Refund, UserProfile, Variation, ItemVariation
+from core.models import Item, OrderItem, Order, Address, Payment, Coupon, Refund, UserProfile, Variation, ItemVariation, Car
 
 
 import stripe
@@ -37,10 +39,22 @@ class ItemListView(ListAPIView):
     queryset = Item.objects.all()
 
 
+class CarListView(ListAPIView):
+    permission_classes = (AllowAny,)
+    serializer_class = CarSerializer
+    queryset = Car.objects.all()
+
+
 class ItemDetailView(RetrieveAPIView):
     permission_classes = (AllowAny,)
     serializer_class = ItemDetailSerializer
     queryset = Item.objects.all()
+
+
+class CarDetailView(RetrieveAPIView):
+    permission_classes = (AllowAny,)
+    serializer_class = CarDetailSerializer
+    queryset = Car.objects.all()
 
 
 class OrderQuantityUpdateView(APIView):

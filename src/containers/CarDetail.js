@@ -20,7 +20,7 @@ import {
   Select,
   Divider
 } from "semantic-ui-react";
-import { productDetailURL, addToCartURL } from "../constants";
+import { productDetailURL, addToCartURL, carDetailURL } from "../constants";
 import { fetchCart } from "../store/actions/cart";
 import { authAxios } from "../utils";
 
@@ -50,7 +50,7 @@ class ProductDetail extends React.Component {
     } = this.props;
     this.setState({ loading: true });
     axios
-      .get(productDetailURL(params.productID))
+      .get(carDetailURL(params.productID))
       .then(res => {
         this.setState({ data: res.data, loading: false });
       })
@@ -59,36 +59,6 @@ class ProductDetail extends React.Component {
       });
   };
 
-  handleFormatData = formData => {
-    // convert {colour: 1, size: 2} to [1,2] - they're all variations
-    return Object.keys(formData).map(key => {
-      return formData[key];
-    });
-  };
-
-  handleAddToCart = slug => {
-    this.setState({ loading: true });
-    const { formData } = this.state;
-    const variations = this.handleFormatData(formData);
-    authAxios
-      .post(addToCartURL, { slug, variations })
-      .then(res => {
-        this.props.refreshCart();
-        this.setState({ loading: false });
-      })
-      .catch(err => {
-        this.setState({ error: err, loading: false });
-      });
-  };
-
-  handleChange = (e, { name, value }) => {
-    const { formData } = this.state;
-    const updatedFormData = {
-      ...formData,
-      [name]: value
-    };
-    this.setState({ formData: updatedFormData });
-  };
 
   render() {
     const { data, error, formData, formVisible, loading } = this.state;
@@ -136,52 +106,7 @@ class ProductDetail extends React.Component {
                   </React.Fragment>
                 }
                 description={item.description}
-                extra={
-                  <React.Fragment>
-                    <Button
-                      fluid
-                      color="yellow"
-                      floated="right"
-                      icon
-                      labelPosition="right"
-                      onClick={this.handleToggleForm}
-                    >
-                      Add to cart
-                      <Icon name="cart plus" />
-                    </Button>
-                  </React.Fragment>
-                }
               />
-              {formVisible && (
-                <React.Fragment>
-                  <Divider />
-                  <Form onSubmit={() => this.handleAddToCart(item.slug)}>
-                    {data.variations.map(v => {
-                      const name = v.name.toLowerCase();
-                      return (
-                        <Form.Field key={v.id}>
-                          <Select
-                            name={name}
-                            onChange={this.handleChange}
-                            placeholder={`Select a ${name}`}
-                            fluid
-                            selection
-                            options={v.item_variations.map(item => {
-                              return {
-                                key: item.id,
-                                text: item.value,
-                                value: item.id
-                              };
-                            })}
-                            value={formData[name]}
-                          />
-                        </Form.Field>
-                      );
-                    })}
-                    <Form.Button primary>Add</Form.Button>
-                  </Form>
-                </React.Fragment>
-              )}
             </Grid.Column>
               <Grid.Column>
                 <Header as="h2">Contact Details will display here</Header>
